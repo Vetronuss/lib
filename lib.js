@@ -1,6 +1,6 @@
 
 
-console.log("%c Loaded Library %cVer: %c 1.2 ",'background: #222; color: #bada55','background: #222','color: #0210d1; background:#222')
+console.log("%c Loaded Library %cVer: %c 1.3 ",'background: #222; color: #bada55','background: #222','color: #0210d1; background:#222')
 var windowSize;
 function squareCanvas()
 {
@@ -142,7 +142,7 @@ function midpoint(x1,y1,x2,y2)
 }
 
 
-function vMidPoint(p1,p2)
+function vMidpoint(p1,p2)
 {
   return midPoint(p1.x,p1.y,p2.x,p2.y)
 }
