@@ -1,6 +1,6 @@
 # lib
 A p5.js library comprising of a ton of functions i use (also includes collide2d.js)
-'''<script src="https://cdn.jsdelivr.net/gh/Vetronuss/lib/lib.js"></script>'''
+<script src="https://cdn.jsdelivr.net/gh/Vetronuss/lib/lib.js"></script>
 ### squareCanvas()
 Creates a square canvas based on window size
 ### getFps([smooth])
