@@ -1,6 +1,14 @@
 
 
 console.log("%c Loaded Library %cVer: %c 1.3 ",'background: #222; color: #bada55','background: #222','color: #0210d1; background:#222')
+
+function LIB_TEST()
+{
+	
+
+console.log("%c Loaded Library %cVer: %c 1.3 ",'background: #222; color: #bada55','background: #222','color: #0210d1; background:#222')
+}
+
 var windowSize;
 function squareCanvas()
 {
