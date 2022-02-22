@@ -1,4 +1,4 @@
-
+console.log("Library Loaded Ver: 1.1")
 var windowSize;
 function squareCanvas()
 {
@@ -296,6 +296,10 @@ function closestObj(m,other)
   var closest = other[0]
   for (var i = 0; i < other.length; i++)
   {
+	  if (m == other[i])
+	  {
+	  	continue;
+	  }
     if (vDist(m,other) < vDist(m,closest))
     {
       closest = other[i];
