@@ -1,4 +1,6 @@
-console.log("Library Loaded Ver: 1.1")
+
+
+console.log("%c Loaded Library %cVer: %c 1.2 ",'background: #222; color: #bada55','background: #222','color: #0210d1; background:#222')
 var windowSize;
 function squareCanvas()
 {
@@ -12,10 +14,35 @@ function squareCanvas()
   createCanvas(windowSize,windowSize)
 }
 
-function getFps()
+var prevFrames = []
+var prevFramesMax = 5;
+//gets frames per second, the smooth parameter will return avg of past 5 frames
+function getFps(smooth = false)
 {
-  return round((1000/deltaTime).toFixed(1));
+  if (!smooth){
+    return round((1000/deltaTime).toFixed(1));
+  }else
+  {
+    if (prevFrames.length < prevFramesMax)
+    {
+      var l = getFps()
+      prevFrames.push(l)
+      return l;
+    }else
+    {
+      prevFrames[frameCount%prevFramesMax] = getFps();
+    }
+    
+    var total = 0;
+    for (var i = 0; i < prevFramesMax;i++)
+    {
+      total+=prevFrames[i];
+    }
+    return floor(total/prevFramesMax)
+  }
 }
+
+
 
 //func for testing if 2 lines intersect
 function intersect(x1, y1, x2, y2, x3, y3, x4, y4) {
@@ -296,11 +323,11 @@ function closestObj(m,other)
   var closest = other[0]
   for (var i = 0; i < other.length; i++)
   {
-	  if (m == other[i])
-	  {
-	  	continue;
-	  }
-    if (vDist(m,other) < vDist(m,closest))
+    if (m == other[i])
+    {
+      continue;
+    }
+    if (vDist(m,other[i]) < vDist(m,closest))
     {
       closest = other[i];
     }
@@ -382,6 +409,8 @@ function lerpVector(c1,c2,amount)
   var y = (c1.y + c2.y) * amount;
   return createVector(x,y)
 }
+
+
 
 
 
