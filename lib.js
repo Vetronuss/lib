@@ -1,5 +1,4 @@
 
-
 console.log("%c Loaded Library %cVer: %c 1.3 ",'background: #222; color: #bada55','background: #222','color: #0210d1; background:#222')
 
 function LIB_TEST()
@@ -122,6 +121,11 @@ function perp(px,py,x1,y1,x2,y2)
     }
   }
   //https://monkeyproofsolutions.nl/wordpress/how-to-calculate-the-shortest-distance-between-a-point-and-a-line/
+}
+
+function vPerp(p,c1,c2)
+{
+  return perp(p.x,p.y,c1.x,c1.y,c2.x,c2.y)
 }
 
 function distance(x1,y1,x2,y2)
@@ -369,6 +373,7 @@ function vLine(p1,p2)
 function drawRay(p1,ang,length = 100)
 {
   line(p1.x,p1.y,p1.x+cos(ang)*length,p1.y+sin(ang)*length)
+  return createVector(p1.x+cos(ang)*length,p1.y+sin(ang)*length)
 }
 
 function clamp(value, min, max)
@@ -418,7 +423,64 @@ function lerpVector(c1,c2,amount)
   return createVector(x,y)
 }
 
+//draws an array of vectors
+function drawPoly(poly, close = false)
+{
+  beginShape();
+  for (var i = 0; i < poly.length; i++)
+  {
+    vertex(poly[i].x,poly[i].y)
+  }
+  if (close)
+    endShape(CLOSE);
+  else
+    endShape()
+}
 
+//converts a array of vectors to an array of lines (2 vector arrays)
+function vertsToLines(poly)
+{
+  var out = [];
+  for (var i = 0; i < poly.length-1; i++)
+  {
+    out.push([poly[i],poly[i+1]])
+  }
+  out.push([poly[poly.length-1],poly[0]])
+  return out;
+}
+
+//returns the closest point on a polygon to a point
+function closestEdge(p,poly)
+{
+  
+  var lines = vertsToLines(poly)
+  var close = [-9999999,-9999999] //crazy far point
+  for (var i = 0; i < lines.length; i++)
+  {
+    var po = perp(p.x,p.y,lines[i][0].x,lines[i][0].y,lines[i][1].x,lines[i][1].y)
+    
+    if (dist(p.x,p.y,po[0],po[1]) < dist(close[0],close[1],p.x,p.y))
+    {
+      close = po;
+    }
+  }
+  return createVector(close[0],close[1]);
+}
+
+
+//function to find closest point on a circle to another point
+//c is circle pos, size is radius
+function closestEdgeCircle(p,c,size)
+{
+  var a = vGetAngle(c,p);
+  return createVector(cos(a)*size,sin(a)*size)
+}
+
+//draws a circle
+function drawCircle(p,size)
+{
+  circle(p.x,p.y,size)  
+}
 
 
 
@@ -428,8 +490,6 @@ Created by http://benmoren.com
 Some functions and code modified version from http://www.jeffreythompson.org/collision-detection
 Version v0.7.3 | June 22, 2020
 CC BY-NC-SA 4.0
-
-
 */
 
 
@@ -1094,3 +1154,4 @@ var cssColors = ['AliceBlue',
 'Yellow',
 'YellowGreen',
 ]
+
