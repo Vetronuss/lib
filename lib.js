@@ -1,16 +1,18 @@
+const LIB_VER = "1.3.2"
 
-console.log("%c Loaded Library %cVer: %c 1.3 ",'background: #222; color: #bada55','background: #222','color: #0210d1; background:#222')
+console.log("%c Loaded Library %cVer: %c" + LIB_VER,'background: #222; color: #bada55','background: #222','color: #0210d1; background:#222')
 
 function LIB_TEST()
 {
 	
 
-console.log("%c Loaded Library %cVer: %c 1.3 ",'background: #222; color: #bada55','background: #222','color: #0210d1; background:#222')
+console.log("%c Loaded Library %cVer: %c" + LIB_VER,'background: #222; color: #bada55','background: #222','color: #0210d1; background:#222')
 }
 
-var windowSize;
+
 function squareCanvas()
 {
+  var windowSize;
   if (windowWidth>windowHeight)
   {
     windowSize = windowHeight
@@ -19,6 +21,7 @@ function squareCanvas()
     windowSize = windowWidth;
   }
   createCanvas(windowSize,windowSize)
+  return windowSize;
 }
 
 var prevFrames = []
@@ -45,10 +48,24 @@ function getFps(smooth = false)
     {
       total+=prevFrames[i];
     }
+    if (floor(total/prevFramesMax) == Infinity)
+    {
+      return getFps();
+    }
     return floor(total/prevFramesMax)
   }
 }
 
+//returns center of canvas
+function getCenter()
+{
+  return createVector(width/2,height/2)
+}
+
+function mousePos()
+{
+  return createVector(mouseX,mouseY)
+}
 
 
 //func for testing if 2 lines intersect
@@ -90,7 +107,7 @@ function vIntersect(p1,p2,p3,p4)
 //dist with vectors
 function vDist(p1,p2)
 {
-  return dist(p1.x,p1.y,p2.x,p2.y)
+  return distance(p1.x,p1.y,p2.x,p2.y)
 }
 
 
@@ -130,7 +147,7 @@ function vPerp(p,c1,c2)
 
 function distance(x1,y1,x2,y2)
 {
-  return dist(x1,y1,x2,y2)
+  return sqrt(sq(y2-y1)+sq(x2-x1));
 }
 
 function midpoint(x1,y1,x2,y2)
@@ -159,8 +176,10 @@ function vMidpoint(p1,p2)
   return midPoint(p1.x,p1.y,p2.x,p2.y)
 }
 
+var hpColors = []
 function hpBar(x,y,wi,he,hp)
 {
+  var hpColors = [color('green'),color('red')]
   x -=wi/2;
   hp = constrain(hp,0,1)
   push();
@@ -207,12 +226,15 @@ function keyCodeDown(k)
   return keyIsDown(k)
 }
 
+
+
 function keyDown(k){
   if (key == k)
   {
     return keyIsDown(keyCode)
   }else
   {
+    key = NaN;
     return false;
   }
 }
@@ -370,7 +392,7 @@ function vLine(p1,p2)
 {
   line(p1.x,p1.y,p2.x,p2.y);
 }
-function drawRay(p1,ang,length = 100)
+function drawRay(p1,ang,length = 50)
 {
   line(p1.x,p1.y,p1.x+cos(ang)*length,p1.y+sin(ang)*length)
   return createVector(p1.x+cos(ang)*length,p1.y+sin(ang)*length)
@@ -396,6 +418,7 @@ function date()
 
 function normNoise(grid)
 {
+  var gridSize = grid.length;
   var low = grid[0][0]
   var high = grid[0][0];
   for (var y = 0; y < gridSize; y++)
@@ -482,6 +505,11 @@ function drawCircle(p,size)
   circle(p.x,p.y,size)  
 }
 
+//draws a point
+function drawPoint(p)
+{
+  point(p.x,p.y)
+}
 
 
 /*
@@ -1154,4 +1182,3 @@ var cssColors = ['AliceBlue',
 'Yellow',
 'YellowGreen',
 ]
-
