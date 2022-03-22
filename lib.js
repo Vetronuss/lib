@@ -1,3 +1,4 @@
+
 const LIB_VER = "1.3.2"
 
 console.log("%c Loaded Library %cVer: %c" + LIB_VER,'background: #222; color: #bada55','background: #222','color: #0210d1; background:#222')
@@ -9,6 +10,37 @@ function LIB_TEST()
 console.log("%c Loaded Library %cVer: %c" + LIB_VER,'background: #222; color: #bada55','background: #222','color: #0210d1; background:#222')
 }
 
+class AVG
+{
+  
+  
+  constructor(size)
+  {
+    this.size = size;  
+    this.arr = [];
+  }
+  add(value)
+  {
+    if (this.arr.length < this.size)
+    {
+      this.arr.push(value);
+    } 
+    else
+    {
+      this.arr.splice(0,1);  
+      this.arr.push(value);
+    }
+  }
+  get()
+  {
+    var val = 0;
+    for (var i = 0; i < this.arr.length; i++)
+    {
+      val+=this.arr[i];
+    }
+    return val/this.arr.length;
+  }
+}
 
 function squareCanvas()
 {
@@ -24,36 +56,28 @@ function squareCanvas()
   return windowSize;
 }
 
-var prevFrames = []
-var prevFramesMax = 5;
+var prevFrames
+var prevFramesMax = 50;
+var FPSstart = false;
 //gets frames per second, the smooth parameter will return avg of past 5 frames
 function getFps(smooth = false)
 {
+  if (!FPSstart)
+  {
+    prevFrames = new AVG(prevFramesMax);
+    FPSstart = true;
+  }
   if (!smooth){
     return round((1000/deltaTime).toFixed(1));
   }else
   {
-    if (prevFrames.length < prevFramesMax)
-    {
-      var l = getFps()
-      prevFrames.push(l)
-      return l;
-    }else
-    {
-      prevFrames[frameCount%prevFramesMax] = getFps();
-    }
-    
-    var total = 0;
-    for (var i = 0; i < prevFramesMax;i++)
-    {
-      total+=prevFrames[i];
-    }
-    if (floor(total/prevFramesMax) == Infinity)
-    {
-      return getFps();
-    }
-    return floor(total/prevFramesMax)
+    prevFrames.add(getFps())
   }
+  if (prevFrames.get() == Infinity)
+  {
+    return getFps();
+  }
+  return round(prevFrames.get());
 }
 
 //returns center of canvas
@@ -62,11 +86,15 @@ function getCenter()
   return createVector(width/2,height/2)
 }
 
-function mousePos()
+function getMousePos()
 {
   return createVector(mouseX,mouseY)
 }
-
+//alias
+function mousePos()
+{
+  return getMousePos();
+}
 
 //func for testing if 2 lines intersect
 function intersect(x1, y1, x2, y2, x3, y3, x4, y4) {
@@ -176,7 +204,7 @@ function vMidpoint(p1,p2)
   return midPoint(p1.x,p1.y,p2.x,p2.y)
 }
 
-var hpColors = []
+
 function hpBar(x,y,wi,he,hp)
 {
   var hpColors = [color('green'),color('red')]
